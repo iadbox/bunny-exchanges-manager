@@ -1,6 +1,7 @@
 # BunnyExchangesManager
 
-TODO: Write a gem description
+This gem provides a way to create and keep RabbitMQ exchanges using Bunny,
+and keep them to be used.
 
 ## Installation
 
@@ -18,7 +19,41 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+To use `BunnyExchanges` you must define the configuration of each exchange in the
+YAML config file.
+
+By default the path to the configuration file is `config/exchanges.yml`, but you
+can provide a specific path with:
+```ruby
+BunnyExchanges.configure do |config|
+  config.path = "my/custom/path"
+end
+```
+
+### The configuration file
+
+In the configuration file you have to name and define all your exchanges:
+```yml
+an_action:
+  name: the.exchange.name
+  type: fanout
+  durable: false
+  auto_delete: true
+  arguments:
+    one_argument: 1
+    another_argument: "2"
+
+another_action:
+  name: another.exchange.name
+  type: topic
+```
+
+### Get exchanges
+
+To get a configured exchange:
+```ruby
+BunnyExchanges.get(:an_action) # => #<Bunny::Exchange:...>
+```
 
 ## Contributing
 
