@@ -1,0 +1,8 @@
+the_action:
+  name: a.real.exchange
+  type: fanout
+
+another_action:
+  name: another.exchange
+  type: topic
+  durable: true
