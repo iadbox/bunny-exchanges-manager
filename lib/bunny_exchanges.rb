@@ -16,4 +16,22 @@ module BunnyExchanges
   def self.configure
     yield configuration
   end
+
+  # Delegates `#get` to the current manager.
+  # Returns the required exchange.
+  #
+  # @return [Bunny::Exchange] the required exchange.
+  # @raise [BunnyExchanges::UndefinedExchange] when the required example is not defined.
+  # @see Tenant.using
+  def self.get service, action
+    manager.get(service, action)
+  end
+
+  # The current instance of {BunnyExchanges::Manager}.
+  #
+  # @return [BunnyExchanges::Manager] the manager with the current configuration.
+  # @see Tenant.using
+  def self.manager
+    @manager ||= Manager.new(configuration)
+  end
 end
