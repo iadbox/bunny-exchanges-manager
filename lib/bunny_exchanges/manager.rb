@@ -45,7 +45,7 @@ module BunnyExchanges
     end
 
     def config_for action
-      config.exchanges.fetch(action.to_s) { raise_undefined(service, action) }
+      config.exchanges.fetch(action.to_s) { raise_undefined(action) }
     end
 
     def channel

@@ -4,26 +4,18 @@ RSpec.describe BunnyExchanges::Manager do
 
   let :exchanges_config do
     {
-      "service_1" => {
-        "action_1" => {
-          "name" => "an.exchange.name",
-          "type" => "fanout",
-          "durable" => false,
-          "auto_delete" => true,
-          "arguments" => {
-            "one" => 1,
-            "two" => "second"
-          }
-        },
-        "action_2" => {
-          "name" => "the.name"
-        },
-      },
-      "service_2" => {
-        "action_1" => {
-          "name" => "another",
-          "type" => "topic"
+      "action_1" => {
+        "name" => "an.exchange.name",
+        "type" => "fanout",
+        "durable" => false,
+        "auto_delete" => true,
+        "arguments" => {
+          "one" => 1,
+          "two" => "second"
         }
+      },
+      "action_2" => {
+        "name" => "the.name"
       }
     }
   end
@@ -38,7 +30,7 @@ RSpec.describe BunnyExchanges::Manager do
   describe '#get' do
     context 'with a defined exchange' do
       it 'builds and caches the exchange' do
-        exchange = subject.get(:service_1, :action_1)
+        exchange = subject.get(:action_1)
 
         expect(exchange).to be_a Bunny::Exchange
 
@@ -48,14 +40,14 @@ RSpec.describe BunnyExchanges::Manager do
         expect(exchange.auto_delete?).to eq true
         expect(exchange.arguments   ).to eq "one" => 1, "two" => "second"
 
-        exchange_again = subject.get(:service_1, :action_1)
+        exchange_again = subject.get(:action_1)
         expect(exchange.object_id).to eq exchange_again.object_id
       end
     end
 
     context 'with an undefined exchange' do
       it 'raises error' do
-        expect{ subject.get(:service_3, :action_1) }.
+        expect{ subject.get(:action_3) }.
           to raise_error BunnyExchanges::UndefinedExchange
       end
     end

@@ -1,6 +1,7 @@
 require "bunny_exchanges/version"
 
 require "bunny_exchanges/configuration"
+require "bunny_exchanges/manager"
 
 module BunnyExchanges
   # BunnyExchanges configuration
