@@ -17,7 +17,7 @@ module BunnyExchanges
 
     # Loads the configuration YAML file contents.
     #
-    # @return [Hash] the exchanges configuration
+    # @return [Hash] the exchanges configuration.
     def exchanges
       @exchanges ||= YAML.load_file(path)
     end
