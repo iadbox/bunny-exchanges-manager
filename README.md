@@ -55,6 +55,24 @@ To get a configured exchange:
 BunnyExchanges.get(:an_action) # => #<Bunny::Exchange:...>
 ```
 
+### Pre-forking servers
+
+There are situations when you need to reconnect to your AMQP server.
+A common case is when you use BunnyExchanges with pre-forking servers like
+PhussionPassenger or Unicorn.
+For those situations a `BunnyExchanges.reset!` method is provided.
+
+The following example shows how to reset your connection after a fork on
+PhussionPassenger.
+```ruby
+if defined?(PhusionPassenger)
+  PhusionPassenger.on_event(:starting_worker_process) do |forked|
+    BunnyExchanges.reset! if forked
+  end
+end
+
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/bunny_exchanges_manager/fork )
