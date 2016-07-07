@@ -26,7 +26,7 @@ module BunnyExchanges
   # @raise [BunnyExchanges::UndefinedExchange] when the required example is not defined.
   # @see Tenant.using
   def self.get action, connection_name: :default
-    manager.get(action, connection_name: connection_name)
+    manager.get(action, connection_name)
   end
 
   # Removes the current manager and starts a new one with the same configuration.

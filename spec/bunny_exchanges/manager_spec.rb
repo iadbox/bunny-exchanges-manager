@@ -32,7 +32,7 @@ RSpec.describe BunnyExchanges::Manager do
       it 'builds and caches the exchange' do
         expect(config).to receive(:connection_config).with(:default).and_return({})
         
-        exchange = subject.get(:action_1)
+        exchange = subject.get(:action_1, :default)
 
         expect(exchange).to be_a Bunny::Exchange
 
@@ -42,14 +42,14 @@ RSpec.describe BunnyExchanges::Manager do
         expect(exchange.auto_delete?).to eq true
         expect(exchange.arguments   ).to eq "one" => 1, "two" => "second"
 
-        exchange_again = subject.get(:action_1)
+        exchange_again = subject.get(:action_1, :default)
         expect(exchange.object_id).to eq exchange_again.object_id
       end
     end
 
     context 'with an undefined exchange' do
       it 'raises error' do
-        expect{ subject.get(:action_3) }.
+        expect{ subject.get(:action_3, :default) }.
           to raise_error BunnyExchanges::UndefinedExchange
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe BunnyExchanges::Manager do
       it 'asks for the another connection' do
         expect(config).to receive(:connection_config).with(:another).and_return({})
         
-        exchange = subject.get(:action_1, :connection_name => :another)
+        exchange = subject.get(:action_1, :another)
 
         expect(exchange).to be_a Bunny::Exchange
       end
