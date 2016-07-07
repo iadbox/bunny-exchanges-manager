@@ -12,18 +12,19 @@ module BunnyExchanges
     def initialize config = BunnyExchanges.configuration
       @config    = config
       @exchanges = {}
+      @channels  = {}
     end
 
     # Gets or builds the required exchange.
     #
-    # @param [Symbol] the action name.
+    # @param [Symbol, Symbol] the action name and the connection name
     # @return [Bunny::Exchange] the required bunny exchange.
     # @raise [BunnyExchanges::Manager::UndefinedExchange] when the exchange is not defined.
-    def get action
+    def get action, connection_name
       exchanges[action.to_sym] ||= begin
         name, options = params_for(action)
 
-        channel.exchange(name, options)
+        channel_for(connection_name).exchange(name, options)
       end
     end
 
@@ -48,9 +49,9 @@ module BunnyExchanges
       config.exchanges.fetch(action.to_s) { raise_undefined(action) }
     end
 
-    def channel
-      @channel ||= begin
-        conn = Bunny.new(config.rabbitmq)
+    def channel_for connection_name
+      @channels[connection_name] ||= begin
+        conn = Bunny.new(config.connection_config(connection_name))
         conn.start
 
         conn.create_channel

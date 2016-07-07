@@ -26,7 +26,7 @@ By default the path to the configuration file is `config/exchanges.yml`, but you
 can provide a specific path with:
 ```ruby
 BunnyExchanges.configure do |config|
-  config.path = "my/custom/path"
+  config.exchanges_path = "my/custom/path"
 end
 ```
 
@@ -53,6 +53,67 @@ another_action:
 To get a configured exchange:
 ```ruby
 BunnyExchanges.get(:an_action) # => #<Bunny::Exchange:...>
+```
+
+Optionally, if you configured many connections, you can specify it like this:
+```ruby
+BunnyExchanges.get(:an_action, connection_name: :another) # => #<Bunny::Exchange:...>
+```
+
+### Connections
+
+The default connection config file path is `config/rabbitmq.yml`, although you
+can provide as much connections as needed with:
+```ruby
+BunnyExchanges.configure do |config|
+  config.connections = { 
+    :default => "config/rabbitmq/default.yml",
+    :another => "config/rabbitmq/another.yml",
+  }
+end
+```
+
+The connection file needs to have the same parameters `Bunny.new` can accept,
+for example:
+
+```yml
+:host: localhost
+:port: 5672
+:user: guest
+:pass: guest
+:vhost: /
+:threaded: true
+:heartbeat: 2
+```
+
+Or it can also have a connection definition for each environment of your app:
+
+```yml
+development:
+  :host: localhost
+  :port: 5672
+  :user: guest
+  :pass: guest
+  :vhost: /
+  :threaded: true
+  :heartbeat: 2
+
+test:
+  :host: localhost
+  :port: 5672
+  :user: guest
+  :pass: guest
+  :vhost: /
+  :threaded: true
+  :heartbeat: 2
+```
+
+In case you want to use this feature, you must provide the environment in an initializer:
+
+```ruby
+BunnyExchanges.configure do |config|
+  config.env = Rails.env
+end
 ```
 
 ### Pre-forking servers

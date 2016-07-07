@@ -21,12 +21,12 @@ module BunnyExchanges
   # Delegates `#get` to the current manager.
   # Returns the required exchange.
   #
-  # @param [Symbol, String] the action name
+  # @param [Symbol, Hash] the action name and the connection_name
   # @return [Bunny::Exchange] the required exchange.
   # @raise [BunnyExchanges::UndefinedExchange] when the required example is not defined.
   # @see Tenant.using
-  def self.get action
-    manager.get(action)
+  def self.get action, connection_name: :default
+    manager.get(action, connection_name)
   end
 
   # Removes the current manager and starts a new one with the same configuration.

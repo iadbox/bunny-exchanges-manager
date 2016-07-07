@@ -38,7 +38,7 @@ RSpec.describe BunnyExchanges::Configuration do
     end
   end
 
-  describe '#rabbitmq_path= and #rabbitmq' do
+  describe '#connections and #connection_config' do
     let :config_file do
       File.expand_path("../configuration/test_rabbitmq_configuration.yml" ,__FILE__)
     end
@@ -52,9 +52,9 @@ RSpec.describe BunnyExchanges::Configuration do
       end
 
       it 'parses the rabbitmq config from a yaml file' do
-        subject.rabbitmq_path = config_file
+        subject.connections = {default: config_file}
 
-        expect(subject.rabbitmq).to eq expected_rabbitmq
+        expect(subject.connection_config(:default)).to eq expected_rabbitmq
       end
     end
 
@@ -62,10 +62,10 @@ RSpec.describe BunnyExchanges::Configuration do
       let(:expected_rabbitmq) { { "host" => "test_host" } }
 
       it 'parses the rabbitmq config from a yaml file' do
-        subject.rabbitmq_path = config_file
-        subject.env           = "test"
+        subject.connections = {default: config_file}
+        subject.env         = "test"
 
-        expect(subject.rabbitmq).to eq expected_rabbitmq
+        expect(subject.connection_config(:default)).to eq expected_rabbitmq
       end
     end
   end

@@ -5,7 +5,7 @@ RSpec.describe "configure and use" do
   it 'works properly' do
     BunnyExchanges.configure do |config|
       config.exchanges_path = File.expand_path("../test_exchanges_config.yml", __FILE__)
-      config.rabbitmq_path  = File.expand_path("../test_rabbitmq_config.yml", __FILE__)
+      config.connections    = {default: File.expand_path("../test_rabbitmq_config.yml", __FILE__)}
       config.env = "test"
     end
 

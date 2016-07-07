@@ -6,7 +6,7 @@ require 'bunny_exchanges/version'
 Gem::Specification.new do |spec|
   spec.name          = "bunny_exchanges_manager"
   spec.version       = BunnyExchanges::VERSION
-  spec.authors       = ["jcabotc"]
+  spec.authors       = ["jcabotc", "graimon"]
   spec.email         = ["jcabot@gmail.com"]
   spec.summary       = %q{A gem to initialize RabbitMQ exchanges using Bunny on ruby applications}
   spec.homepage      = ""
