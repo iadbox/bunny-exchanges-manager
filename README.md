@@ -55,6 +55,11 @@ To get a configured exchange:
 BunnyExchanges.get(:an_action) # => #<Bunny::Exchange:...>
 ```
 
+Optionally, if you configured many connections, you can specify it like this:
+```ruby
+BunnyExchanges.get(:an_action, connection_name: :another) # => #<Bunny::Exchange:...>
+```
+
 ### Connections
 
 The default connection config file path is `config/rabbitmq.yml`, although you
