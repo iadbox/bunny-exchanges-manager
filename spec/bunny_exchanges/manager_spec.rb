@@ -21,15 +21,17 @@ RSpec.describe BunnyExchanges::Manager do
   end
 
   let :config do
-    double 'config', :exchanges => exchanges_config,
-                     :rabbitmq  => {}
+    double 'config', :exchanges => exchanges_config
   end
 
   subject { described_class.new config }
 
   describe '#get' do
     context 'with a defined exchange' do
+      
       it 'builds and caches the exchange' do
+        expect(config).to receive(:connection_config).with(:default).and_return({})
+        
         exchange = subject.get(:action_1)
 
         expect(exchange).to be_a Bunny::Exchange
@@ -50,6 +52,22 @@ RSpec.describe BunnyExchanges::Manager do
         expect{ subject.get(:action_3) }.
           to raise_error BunnyExchanges::UndefinedExchange
       end
+    end
+    
+    context 'with another connection' do
+      it 'asks for the another connection' do
+        expect(config).to receive(:connection_config).with(:another).and_return({})
+        
+        exchange = subject.get(:action_1, :connection_name => :another)
+
+        expect(exchange).to be_a Bunny::Exchange
+      end
+    end
+  end
+  
+  describe '#get with another connection' do
+    before do
+      expect(config).to receive(:connection_config).with(:default).and_return({})
     end
   end
 
